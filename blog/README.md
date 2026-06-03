@@ -10,6 +10,35 @@
 
 下面就从三个角度展开：它到底是什么，和常见的 prompt 仓库有什么不同；如果你想自己用，应该怎么接入、怎么开始；如果你打算长期使用，又该怎么把它用顺。
 
+```mermaid
+graph TB
+    Start([开始]) --> A[brainstorming<br/>头脑风暴]
+    A -->|设计文档| B[using-git-worktrees<br/>使用 Git 工作树]
+    B -->|隔离工作区| C[writing-plans<br/>编写计划]
+    C -->|实现计划| D{并行还是同会话}
+    D -->|同会话| E1[subagent-driven-development<br/>子代理驱动开发]
+    D -->|并行会话| E2[executing-plans<br/>执行计划]
+    E1 --> F{每个任务}
+    E2 --> F{每个任务}
+    F --> G[test-driven-development<br/>测试驱动开发]
+    G --> H[requesting-code-review<br/>代码审查]
+    H -->|不通过| F
+    H -->|通过| I{还有任务吗}
+    I -->|是| F
+    I -->|否| J[finishing-a-development-branch<br/>完成开发分支]
+    J --> End([完成])
+```
+
+**快速概览**
+
+| 维度 | 数据 |
+|------|------|
+| 技能数量 | 14 个可组合的 SKILL.md |
+| 支持平台 | 8 种编码代理（Claude Code / Codex CLI / Codex App / Cursor / OpenCode / Gemini CLI / GitHub Copilot CLI / Factory Droid） |
+| 外部依赖 | 零 |
+| 当前版本 | v5.1.0 |
+| 核心主张 | 先设计、再计划、TDD、验证后完成 |
+
 ## 谁会对它有兴趣
 
 - 已经在用 Codex、Claude Code、Cursor、OpenCode 这类工具，但觉得代理表现忽好忽坏的人
@@ -69,13 +98,15 @@ Superpowers 试图把一名优秀工程师在真实项目中的开发习惯，�
 
 ### 选择平台
 
-当前仓库已经为多种代理环境准备了接入方式，常见平台包括：
+当前仓库已经为多种代理环境准备了接入方式，支持以下平台：
 
 - Claude Code
 - Cursor
-- Codex
+- Codex CLI / Codex App
 - OpenCode
 - Gemini CLI
+- GitHub Copilot CLI
+- Factory Droid
 
 不同平台安装方式不同，但核心目标一致：让平台能发现 `skills/` 目录中的 `SKILL.md`，并在对话过程中按需调用。
 
